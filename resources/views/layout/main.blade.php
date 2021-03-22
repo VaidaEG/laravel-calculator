@@ -8,5 +8,6 @@
 </head>
 <body>
     @yield('calculatorContent')
+    @yield('content')
 </body>
 </html>

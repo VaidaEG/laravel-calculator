@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CalculatorController;
+use App\Http\Controllers\PostCalculatorController;
 
 
 /*
@@ -19,4 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('{action}/{number1}/{number2}', [CalculatorController::class, 'index']);
+Route::get('calculator/{action}/{number1}/{number2}', [CalculatorController::class, 'index']);
+Route::get('calc', [PostCalculatorController::class, 'show'])->name('show-calc');
+Route::post('calc', [PostCalculatorController::class, 'calc'])->name('do-math');
