@@ -5,6 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use Illuminate\Http\Request;
 
+
+/*
+$account - modelio objektas. Vienas daiktas sukurtas is modelio klases  / eilute DB
+$accounts - objektas - kolekcija. Visu account rinkinys / visa lentele accounts DB
+'account' - stringas naudojamas vardams arba urlams sudaryti
+Account - modelio klases vardas, tas kuris sukuriamas komanda make:model Account
+*/
 class AccountController extends Controller
 {
     /**
@@ -14,7 +21,10 @@ class AccountController extends Controller
      */
     public function index()
     {
-        //
+        $accounts = Account::all(); // visos saskaitos
+        $accounts = $accounts->sortBy('eur'); // objektas - kolekcija
+        // https://laravel.com/docs/8.x/collections#available-methods
+        return view('account.index', ['accounts' => $accounts]);
     }
 
     /**
@@ -24,7 +34,7 @@ class AccountController extends Controller
      */
     public function create()
     {
-        //
+        return view('account.create');
     }
 
     /**
@@ -35,7 +45,10 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $account = new Account; // <--- Modelis abstraktus kodas
+        $account -> eur = $request -> eur_in_account; //<-- kaireje duomenys is DB, desineje - is formos name
+        $account -> save(); // <-- Modelis irasomas i DB
+        return redirect() -> route('account.index');
     }
 
     /**
@@ -57,7 +70,7 @@ class AccountController extends Controller
      */
     public function edit(Account $account)
     {
-        //
+        return view('account.edit', ['account' => $account]);
     }
 
     /**
@@ -69,7 +82,22 @@ class AccountController extends Controller
      */
     public function update(Request $request, Account $account)
     {
-        //
+        $account -> eur = $request -> eur_in_account;
+        // DB account
+        $account -> save(); // <-- Modelis irasomas i DB
+        return redirect() -> route('account.index');
+    }
+
+    public function add(Account $account)
+    {
+        return view('account.add', ['account' => $account]);
+    }
+    public function addToAccount(Request $request, Account $account)
+    {
+        $account -> eur = $account -> eur + $request -> add;
+        // DB account
+        $account -> save(); // <-- Modelis irasomas i DB
+        return redirect() -> route('account.index');
     }
 
     /**
@@ -80,6 +108,7 @@ class AccountController extends Controller
      */
     public function destroy(Account $account)
     {
-        //
+        $account -> delete();
+        return redirect() -> route('account.index');
     }
 }
