@@ -5,8 +5,8 @@
     <a href="{{route('account.add', $account)}}">ADD</a>
     <form action={{route('account.destroy', $account)}} method="post">
     <button type="submit">DELETE</button>
+     @csrf
     </form>
-    @csrf
     </li>
 @endforeach
 </ul>
